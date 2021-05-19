@@ -8,3 +8,5 @@ gem 'require_all'
 gem "rest-client"
 gem 'tty-prompt'
 gem 'rspec'
+gem 'terminal-table'
+gem 'colorize'
