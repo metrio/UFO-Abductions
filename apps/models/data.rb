@@ -18,7 +18,7 @@ module Data
 
     end
 
-    class Affirmations
+    class Messages
         
         def random_affirmation
             ["Aww, that's okay you'll get it next time!",
@@ -26,6 +26,13 @@ module Data
             "Don't give up; you'll get there!",
             "You're so close; I believe in you!",
             "If at first you don't succeed, try, try again!"].sample
+        end
+
+        def welcome
+            puts "Welcome to UFO Abductions"
+            puts "Your friend is being Abducted!"
+            puts "You only have one chance to save your friend, you have to find the Code Word to shut off the Tractor beam"
+            puts "It looks like you can make 6 wrong guesses before they fully abduct them"
         end
         
     end

@@ -1,13 +1,15 @@
 require 'pry'
 require 'tty-prompt'
 require 'terminal-table'
-require_relative './data'
+require_all './apps'
 
 
 class CLI
+    include HangmanLogic
     @@prompt = TTY::Prompt.new
     @@word = Data::Nouns.new
     @@ufo = Data::UFO.new
+    @@messages = Data::Messages.new
     
 
     def system_clear
@@ -17,10 +19,8 @@ class CLI
 
     def main_menu
         self.system_clear
-        puts "Welcome to UFO Abductions"
-        puts "Your friend is being Abducted!"
-        puts "You only have one chance to save your friend, you have to find the Code Word to shut off the Tractor beam"
-        puts "It looks like you can make 6 wrong guesses before they fully abduct them"
+
+        @@messages.welcome
         choices = {"Yes" => 1, "No" => 2}
         choice = @@prompt.select("Are you ready to save your friend? (Y/N) ", choices)
             if choice == 1
@@ -35,27 +35,42 @@ class CLI
     end
 
     def hangman_start
-        code_word = @@word.code_word
-        current_string = code_word[0].gsub(/./ , '_')
-        guesses = []
-        ## for the game to start I need a hangman method that takes a string
-        ## and a letter
-
-        ## we will keep playing until either 6 wrong_guesses.length == 6 or the current_string doesn't look like word
-        ##
-        ## 1. Show UFO abducting friend and word
-        ## 2. Ask User for a letter
-        ## 3. Hangman method works
-        ## 4. Check status and print an affirmation every turn
-        ## 5. 
-
-        
+        code_word = @@word.code_word[0]
+        current_string = code_word.gsub(/./ , '_')
         ufo_stage = @@ufo.abduction(0)
+        guesses = []
+        mistakes = 0
 
-        puts current_string
-        puts ufo_stage
+        until mistakes == 6 || code_word == current_string do
+            
+            guessed = ""
+            puts "Guess the codeword:   #{current_string}"
+            puts ufo_stage
+            guesses.each{ |letter| guessed += "#{letter} "}
+            puts guessed
+            puts "Mistakes Made: #{mistakes}"
 
-        
+            guess = @@prompt.ask("What letter do you want to guess? \n")
+
+            if !guess
+                guess = @@prompt.ask("Doesn't seem like you made a guess, want to try again? \n")
+            elsif guess.length > 1 
+                guess = @@prompt.ask("Sorry you can only guess one letter at a time \n")
+            elsif guesses.include? guess
+                guess = @@prompt.ask("You already chose this letter! Try again! \n")
+            elsif guess[/\d/]
+                guess = @@prompt.ask("There are no numbers in the Code Word \n")
+            elsif !code_word.include?(guess)
+                guesses << guess
+                mistakes += 1
+                ufo_stage = @@ufo.abduction(mistakes)
+                puts @@messages.random_affirmation
+            elsif code_word.include?(guess)
+                guesses << guess
+                current_string = self.check_word(code_word, guesses)
+            end
+
+        end
 
     end
 
