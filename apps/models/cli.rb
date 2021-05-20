@@ -39,18 +39,20 @@ class CLI
         current_string = code_word.gsub(/./ , '_')
         ufo_stage = @@ufo.abduction(0)
         guesses = []
+        wrong_guesses = []
         mistakes = 0
 
         until mistakes == 6 || code_word == current_string do
             
-            guessed = ""
-            puts "Guess the codeword:   #{current_string}"
-            puts ufo_stage
-            guesses.each{ |letter| guessed += "#{letter} "}
-            puts guessed
-            puts "Mistakes Made: #{mistakes}"
+            mistake_letters = ""
+            wrong_guesses.each{ |letter| mistake_letters += "#{letter} "}
 
-            guess = @@prompt.ask("What letter do you want to guess? \n")
+            puts ufo_stage
+            puts "Codeword:\n#{current_string}"
+            puts mistake_letters
+            puts "Incorrect Guesses:\n #{mistakes}"
+
+            guess = @@prompt.ask("Please enter your guess: ")
 
             if !guess
                 guess = @@prompt.ask("Doesn't seem like you made a guess, want to try again? \n")
@@ -62,9 +64,15 @@ class CLI
                 guess = @@prompt.ask("There are no numbers in the Code Word \n")
             elsif !code_word.include?(guess)
                 guesses << guess
+                wrong_guesses << guess.upcase
                 mistakes += 1
                 ufo_stage = @@ufo.abduction(mistakes)
-                puts @@messages.random_affirmation
+                if(mistakes != 6)
+                    puts @@messages.incorrect
+                    puts @@messages.random_affirmation
+                else
+                    puts @@messages.incorrect
+                     
             elsif code_word.include?(guess)
                 guesses << guess
                 current_string = self.check_word(code_word, guesses)

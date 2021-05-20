@@ -16,6 +16,11 @@ module Data
             list.sample
        end
 
+       def like_words(current_string)
+            list = self.split_words
+            
+       end
+
     end
 
     class Messages
@@ -33,6 +38,10 @@ module Data
             puts "Your friend is being Abducted!"
             puts "You only have one chance to save your friend, you have to find the Code Word to shut off the Tractor beam"
             puts "It looks like you can make 6 wrong guesses before they fully abduct them"
+        end
+
+        def incorrect
+            puts "Incorrect! The tractor beam pulls the person closer "
         end
         
     end
