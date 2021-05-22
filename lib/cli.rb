@@ -5,10 +5,10 @@ require_all './apps'
 
 class CLI
     include HangmanLogic
+    include Dictionary_Methods
+    include Messages
+    include UFO
     @@prompt = TTY::Prompt.new
-    @@word = Data::Nouns.new
-    @@ufo = Data::UFO.new
-    @@messages = Data::Messages.new
     
     def system_clear
         sleep(2)
@@ -19,7 +19,7 @@ class CLI
 
         self.system_clear
 
-        @@messages.welcome
+        self.welcome
         choices = {"Yes" => 1, "No" => 2}
         choice = @@prompt.select("Are you ready to save your friend? (Y/N) ", choices)
             if choice == 1
@@ -35,9 +35,9 @@ class CLI
     end
 
     def hangman_start
-        code_word = @@word.code_word[0]
+        code_word = self.code_word[0]
         current_string = code_word.gsub(/./ , '_')
-        ufo_stage = @@ufo.abduction(0)
+        ufo_stage = this.abduction(0)
         guesses = []
         wrong_guesses = []
 
@@ -70,9 +70,9 @@ class CLI
                 
                 guesses << guess.downcase
                 wrong_guesses << guess.upcase
-                ufo_stage = @@ufo.abduction(wrong_guesses.length)
-                puts @@messages.incorrect
-                puts @@messages.random_affirmation
+                ufo_stage = this.abduction(wrong_guesses.length)
+                puts self.incorrect
+                puts self.random_affirmation
 
                 if wrong_guesses.length == 6
                     puts "Your friend got abducted"
