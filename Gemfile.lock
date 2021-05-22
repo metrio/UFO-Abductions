@@ -69,8 +69,6 @@ GEM
       activerecord (>= 4.1)
       sinatra (>= 1.0)
     sqlite3 (1.4.2)
-    terminal-table (3.0.1)
-      unicode-display_width (>= 1.1.1, < 3)
     tilt (2.0.10)
     tty-color (0.6.0)
     tty-cursor (0.7.1)
@@ -87,7 +85,6 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
-    unicode-display_width (2.0.0)
     wisper (2.0.1)
     zeitwerk (2.4.2)
 
@@ -103,8 +100,7 @@ DEPENDENCIES
   rspec
   sinatra-activerecord
   sqlite3
-  terminal-table
   tty-prompt
 
 BUNDLED WITH
-   2.2.16
+   2.2.17

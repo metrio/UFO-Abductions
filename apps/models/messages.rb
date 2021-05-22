@@ -16,7 +16,16 @@ module Messages
     end
 
     def incorrect
-        puts "Incorrect! The tractor beam pulls the your friend closer \n"
+        ["Incorrect! The tractor beam pulls the your friend closer \n",
+        "Ooo so close! Your friend is screaming for help! \n",
+        "Dang! The aliens are snickering at you! \n"].sample
+    end
+
+    def good_job
+        ["Wow you got it! \n", 
+        "Woah! You're a code master! \n", 
+        "Impressive! \n",
+        "Great job! Almost there! \n"].sample
     end
     
 end

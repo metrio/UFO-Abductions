@@ -1,10 +1,6 @@
 require_relative '../config/environment'
-prompt = TTY::Prompt.new
-
 require_all 'lib'
-require_all './apps'
-
+prompt = TTY::Prompt.new
 cli = CLI.new
-
 cli.main_menu
 
