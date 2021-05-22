@@ -35,7 +35,7 @@ If any issues arise make sure that your bundler is up to date and local gem file
 Run the following command
 
 ```ruby
-* bin/rspec
+* ruby './bin/run.rb'
 ```
 
 The game's instructions display within the game, however you wanted to see those instructions prior here's an image:

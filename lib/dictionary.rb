@@ -1,3 +1,4 @@
+require 'pry'
 module Dictionary_Methods
      
     def split_words
