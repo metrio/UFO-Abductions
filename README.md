@@ -1,3 +1,7 @@
 # UFO-Abductions
 
-#Welcome
+# Welcome
+
+# Tests
+
+`bin/rspec`

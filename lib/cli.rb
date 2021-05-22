@@ -10,13 +10,13 @@ class CLI
     @@ufo = Data::UFO.new
     @@messages = Data::Messages.new
     
-
     def system_clear
         sleep(2)
         system('clear')
     end
 
     def main_menu
+
         self.system_clear
 
         @@messages.welcome
@@ -31,6 +31,7 @@ class CLI
             end
             sleep(1.5)
         self.hangman_start
+
     end
 
     def hangman_start
@@ -39,62 +40,59 @@ class CLI
         ufo_stage = @@ufo.abduction(0)
         guesses = []
         wrong_guesses = []
-        mistakes = 0
 
-        until mistakes == 6 || code_word == current_string do
+        until wrong_guesses.length == 6 || code_word == current_string do
             
+            #To display all the misakes so the user can see
             mistake_letters = ""
             wrong_guesses.each{ |letter| mistake_letters += "#{letter} "}
 
+            #Rendering our Game Board
             puts "#{ufo_stage} \n"
             puts "Codeword:\n#{current_string} \n"
             puts mistake_letters
-            puts "Incorrect Guesses:\n #{mistakes} \n"
+            puts "Incorrect Guesses:\n #{wrong_guesses.length} \n"
 
+            #User's input
             guess = @@prompt.ask("Please enter your guess: ")
-
-            if !guess    
-                guess = @@prompt.ask("Doesn't seem like you made a guess, want to try again? \n")
-            
-            elsif guess.length > 1 
+ 
+            #Check User's input
+            if guess.length > 1  #Making sure the user doesn't input more then one letter at a time
                 guess = @@prompt.ask("Sorry you can only guess one letter at a time \n")
 
-            elsif guesses.include? guess
-                guess = @@prompt.ask("You already chose this letter! Try again! \n")
+            elsif /[^A-Za-z]/.match(guess) #Making sure if the letters don't match to let them try again
+                guess = @@prompt.ask("Not a letter! Try Again! \n")
 
-            elsif guess[/\d/]
-                guess = @@prompt.ask("There are no numbers in the Code Word \n")
+            elsif guesses.include? guess.downcase #Downcasing and checking against guesses they've already made
+                guess = @@prompt.ask("You already chose this letter! Try Again! \n")
 
-            elsif !code_word.include?(guess)
+            elsif !code_word.include? guess.downcase #incorrect letter case
                 
-                guesses << guess
+                guesses << guess.downcase
                 wrong_guesses << guess.upcase
-                mistakes += 1
-                ufo_stage = @@ufo.abduction(mistakes)
-                
-                if(mistakes != 6)
-                    puts @@messages.incorrect
-                    puts @@messages.random_affirmation
-                else
-                    puts @@messages.incorrect
+                ufo_stage = @@ufo.abduction(wrong_guesses.length)
+                puts @@messages.incorrect
+                puts @@messages.random_affirmation
+
+                if wrong_guesses.length == 6
+                    puts "Your friend got abducted"
+                    puts "Better luck next time!"
+                    self.game_restart?
                 end
 
-            elsif code_word.include?(guess)
+            elsif code_word.include?(guess.downcase) #correct letter case
+
                 guesses << guess
                 current_string = self.check_word(code_word, guesses)
+
+                if code_word == current_string
+                    puts "You found the Code Word! It was #{code_word} \n"
+                    puts "You saved your friend! \n"
+                    self.game_restart?
+                end
+
             end
         end
-
-        if mistakes == 6
-            puts "Your friend got abducted"
-            puts "Better luck next time!"
-            self.game_restart?
-        elsif code_word == current_string
-            puts "You found the Code Word! It was #{code_word} \n"
-            puts "You saved your friend! \n"
-            self.game_restart?
-        end
-
     end
 
     def game_restart?

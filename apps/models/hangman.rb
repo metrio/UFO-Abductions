@@ -1,4 +1,5 @@
 module HangmanLogic
+    
     def check_word(word, letters)
         current_string = ""
         word.split('').each do |i|
@@ -10,4 +11,6 @@ module HangmanLogic
         end
         return current_string.downcase
     end
+
+
 end
