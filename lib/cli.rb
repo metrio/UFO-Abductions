@@ -1,6 +1,6 @@
 require 'pry'
 require 'tty-prompt'
-require_all './apps'
+require_all './lib'
 
 
 class CLI
@@ -26,11 +26,11 @@ class CLI
                 self.game_end
             end
             sleep(1.5)
-        self.hangman_start
+        self.hangman_game
 
     end
 
-    def hangman_start
+    def hangman_game
         #initialize variables for the game
         code_word = self.code_word[0]
         current_string = code_word.gsub(/./ , '_')
@@ -97,7 +97,7 @@ class CLI
         choice = @@prompt.select("Would you like to play again? (Y/N)\n ", choices)
             if choice == 1
                 puts "Alright Let's do this again!! \n"
-                self.hangman_start
+                self.hangman_game
             else choice == 2
                 puts "Sorry to see you go, hope you play again soon \n"
                 self.game_end
@@ -105,7 +105,7 @@ class CLI
     end
 
     def game_end
-        sleep(5)
+        sleep(3)
         exit!
     end
 end
